@@ -2,7 +2,7 @@ package com.janwue.pong;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Colors;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -19,6 +19,7 @@ public class Panel {
   private int downKey;
   private int upKey;
   Color color;
+  OrthographicCamera camera;
 
   private final float VELOCITY = 500;
 
@@ -44,8 +45,9 @@ public class Panel {
     rectangle = new com.badlogic.gdx.math.Rectangle(this.x, this.y, this.width, this.height);
   }
 
-  public void draw() {
+  public void draw(OrthographicCamera camera) {
      shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+     shapeRenderer.setProjectionMatrix(camera.combined);
      shapeRenderer.setColor(this.color);
      shapeRenderer.rect(this.x, this.y, this.width, this.height);
      shapeRenderer.end();

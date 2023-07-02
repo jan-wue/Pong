@@ -30,14 +30,15 @@ public class Pong extends Game {
   private Player player2;
   private BitmapFont font1;
   private BitmapFont font2;
+  private CameraMan cameraMan;
 
   @Override
   public void create() {
     ball = new Ball();
 
     batch = new SpriteBatch();
-    camera = new OrthographicCamera();
-    camera.setToOrtho(false, 800, 500);
+    camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
     player1 = new Player(new Panel(20,sKey, wKey, Color.FIREBRICK));
     player2 = new Player(new Panel(Gdx.graphics.getWidth() - 50, downArrow,upArrow, Color.BLUE));
@@ -46,7 +47,7 @@ public class Pong extends Game {
      font2 = new BitmapFont();
      ballOverlapsRightPanelSound = Gdx.audio.newMusic(Gdx.files.internal("boing.mp3"));
      ballOverLapsesLeftPanelSound = Gdx.audio.newSound(Gdx.files.internal("boing2.mp3"));
-
+     cameraMan = new CameraMan(camera);
 
   }
 
@@ -55,18 +56,21 @@ public class Pong extends Game {
 
     ScreenUtils.clear(0, 0, 0.2f, 1);
     camera.update();
+    if(Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+       cameraMan.startZoom(ball.getPosition(), 0.9f);
+    }
+    cameraMan.update(Gdx.graphics.getDeltaTime());
 
-    batch.setProjectionMatrix(camera.combined);
     batch.begin();
     font1.draw(batch, String.valueOf(player1.getPoints()), 50, Gdx.graphics.getHeight() -100);
     font2.draw(batch, String.valueOf(player2.getPoints()), Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() -100);
     font1.getData().setScale(3);
     font2.getData().setScale(3);
     batch.end();
-    ball.draw();
+    ball.draw(camera);
 
-    player1.getPanel().draw();
-    player2.getPanel().draw();
+    player1.getPanel().draw(this.camera);
+    player2.getPanel().draw(this.camera);
 
     player1.getPanel().move();
     player2.getPanel().move();

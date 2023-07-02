@@ -2,8 +2,10 @@ package com.janwue.pong;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.Random;
 
@@ -15,7 +17,6 @@ public class Ball {
   private final float radius;
   private float velocity = 100;
   private Color color;
-
 
   public Ball() {
     this((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 20, Color.YELLOW);
@@ -30,8 +31,10 @@ public class Ball {
     this.color = color;
   }
 
-  public void draw() {
+  public void draw(OrthographicCamera camera) {
+    camera.update();
     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+    shapeRenderer.setProjectionMatrix(camera.combined);
     shapeRenderer.setColor(this.color);
     shapeRenderer.circle(this.x, this.y, this.radius);
     shapeRenderer.end();
@@ -109,5 +112,8 @@ public class Ball {
 
   public float getRadius() {
     return radius;
+  }
+  public Vector3 getPosition() {
+    return new Vector3(this.x, this.y, 0);
   }
 }
