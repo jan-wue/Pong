@@ -80,18 +80,22 @@ public class Pong extends Game {
       ball.increaseVelocity();
       upDownDirection = getMovingDirection(player1);
       leftRightDirection = Direction.East;
+      cameraMan.startShake(8);
     }
     if(isBallTouchingRightPanel()) {
       ballOverlapsRightPanelSound.play();
       ball.increaseVelocity();
       upDownDirection = getMovingDirection(player2);
       leftRightDirection = Direction.West;
+      cameraMan.startShake(8);
     }
    if(isBallOverlappingWindowBottom()) {
      upDownDirection = Direction.North;
+     cameraMan.startShake(5);
    }
    if(isBallOverlappingWindowTop()) {
      upDownDirection = Direction.South;
+     cameraMan.startShake(5);
    }
 
     if(upDownDirection == Direction.North) {
